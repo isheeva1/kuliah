@@ -38,7 +38,7 @@ class UserController extends Controller
             ]);
 
          public function update(Request $req){
-            $this->validate($request,
+            $validator= new Validator::make($req->all(),
             [
                 "name" => "required|min:3",
                 "email" => "unique|email",
@@ -54,6 +54,7 @@ class UserController extends Controller
             ]
          }
         
+
         if($validator->fails())
             return redirect()->back()->withErrors($validator);
         */
