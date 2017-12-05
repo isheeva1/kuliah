@@ -23,9 +23,9 @@ class UserController extends Controller
          $validator = Validator::make($req->all(),
             [
                 "name" => "required|min:3",
-                "email" => "unique:root,email",
-                "password" => "required|min:5",
-                "password_confirm" => "required_with:password|same:password|min:5",
+                "email" => "unique:root,email|required",
+                "password" => "required|min:5|alpha_num",
+                "password_confirm" => "required_with:password|same:password",
                 "picture" => "required|mimes:jpeg,png,jpg,bmp",
                 "gender" => "required|in:male,female",
                 "dob" => "required|date_format:Y-m-d",
@@ -34,26 +34,44 @@ class UserController extends Controller
             [
                 "required" =>"Please input :attribute",
                 "min" => ":attribute minimal :min characters",
-                "mimes" => ":attribute must be an image file"
+                "mimes" => ":attribute must be an image file",
+                "alpha_num" => ":attribute must be alphanumeric"
             ]);
 
          public function update(Request $req){
             $validator= new Validator::make($req->all(),
             [
                 "name" => "required|min:3",
-                "email" => "unique|email",
+                "email" => "unique|email|required",
                 "picture" => "mimes:jpeg,png,jpg,bmp",
                 "gender" => "required",
-                "dob" => "date_format:Y-m-d",
+                "dob" => "date_format:Y-m-d|",
                 "address" => "required|min:10"
             ],
             [
                 "required" => "Please input :attribute",
                 "min" =>  ":attribute minimal :min characters",
                 "mimes" => ":attribute must be an image file"
+
             ]
-         }
+         });
         
+        public function updateUser(Request $req){
+            $validator= new Validator::make($req->all(),
+            [
+                "name" => "required|min:3",
+                "email" => "unique|email|required",
+                "picture" => "mimes:jpeg,png,jpg,bmp",
+                "gender" => "required",
+                "dob" => "date_format:Y-m-d|",
+            ],
+            [
+                "required" => "Please input :attribute",
+                "min" =>  ":attribute minimal :min characters",
+                "mimes" => ":attribute must be an image file"
+
+            ]
+         });
 
         if($validator->fails())
             return redirect()->back()->withErrors($validator);
