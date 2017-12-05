@@ -20,19 +20,39 @@ class UserController extends Controller
     }
 
     public function insert(Request $req){
-         /*$validator = Validator::make($req->all(),
+         $validator = Validator::make($req->all(),
             [
                 "name" => "required|min:3",
                 "email" => "unique:root,email",
                 "password" => "required|min:5",
-                "gender" => "in:male,female",
-                "dob" => "required",
+                "password_confirm" => "required_with:password|same:password|min:5",
+                "picture" => "required|mimes:jpeg,png,jpg,bmp",
+                "gender" => "required|in:male,female",
+                "dob" => "required|date_format:Y-m-d",
                 "address" => "required|min:10"
             ],
             [
                 "required" =>"Please input :attribute",
-                "min" => ":attribute minimal :min character"
+                "min" => ":attribute minimal :min characters",
+                "mimes" => ":attribute must be an image file"
             ]);
+
+         public function update(Request $req){
+            $this->validate($request,
+            [
+                "name" => "required|min:3",
+                "email" => "unique|email",
+                "picture" => "mimes:jpeg,png,jpg,bmp",
+                "gender" => "required",
+                "dob" => "date_format:Y-m-d",
+                "address" => "required|min:10"
+            ],
+            [
+                "required" => "Please input :attribute",
+                "min" =>  ":attribute minimal :min characters",
+                "mimes" => ":attribute must be an image file"
+            ]
+         }
         
         if($validator->fails())
             return redirect()->back()->withErrors($validator);
